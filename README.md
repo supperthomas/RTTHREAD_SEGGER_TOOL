@@ -6,15 +6,15 @@
 
 ## 如何使用
 
-rt_hw_jlink_rtt_init 初始化必须在`rt_console_set_device(RT_CONSOLE_DEVICE_NAME);`
+- rt_hw_jlink_rtt_init 初始化必须在`rt_console_set_device(RT_CONSOLE_DEVICE_NAME);` 之前调用
 
-rtconfig中的console也要设置为`jlinkRtt`
-
-实现这两点，基本可以将console设置为segger_rtt
+- rtconfig中的console也要设置为`jlinkRtt`
 
 ```
 #define RT_CONSOLE_DEVICE_NAME "jlinkRtt"
 ```
+
+实现这两点，基本可以将console设置为segger_rtt
 
 ### JLINK_RTT_VIEWER配置
 
@@ -30,13 +30,13 @@ rtconfig中的console也要设置为`jlinkRtt`
 
 ### SEGGER_RTT 地址
 
-segger_rtt的地址，这边通过修改代码，将地址默认设置在0x20000000上面，目前只支持KEIL这样做，后面会支持其他的
+segger_rtt的地址，这边通过修改代码，将地址默认设置在0x20000000上面，目前只支持KEIL这样做，后面会支持其他的，其他编译器debug的时候看下_SEGGER_RTT变量的地址。
 
 ```
 SEGGER_RTT_PUT_CB_SECTION(SEGGER_RTT_CB_ALIGN(SEGGER_RTT_CB _SEGGER_RTT))__attribute__((section(".ARM.__at_0x20000000")));
 ```
 
-## 使用技巧
+## 高级使用技巧
 
 可以在RTT viewer 连上之后，打开putty
 
@@ -54,4 +54,4 @@ SEGGER_RTT_PUT_CB_SECTION(SEGGER_RTT_CB_ALIGN(SEGGER_RTT_CB _SEGGER_RTT))__attri
 
 ## 注意事项
 
-你需要有JLINK连接。 在STM32或者nordic开发板上测试都是可以用的。其他的JLINK应该也是通用的，这个省去了调试的UART串口的占用。可以用这个口打印log或者console调试。
+你需要有JLINK连接。 在STM32或者nordic开发板上测试都是可以用的。其他的JLINK应该也是通用的，这个省去了调试的UART串口的占用。可以用这个口打印log或者console调试。当前前提是得有JLINK相应的硬件。
