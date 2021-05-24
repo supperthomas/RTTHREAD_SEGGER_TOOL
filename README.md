@@ -79,3 +79,28 @@ RTT本质上，就是一直轮询_SEGGER_RTT这个全局变量。所以对架构
 
 这个是初步版本，如果有什么值得改进，或者建议，可以提issue或者直接PR。都是欢迎大家的。
 
+
+
+# SWO的使用
+
+SWO 的使用方法更加简单，原理和RTT一样，而且也可以实现TX RX。我之前一直以为，SWO只有要一根线，只能实现TX， 后来觉得有些奇怪，就查了下相关资料。发现也是可以实现RX的。那也就可以替代串口的console了。如下图所示。
+
+![image-20210525025001074](images/image-20210525025001074.png)
+
+SWO的打印有以下几种方式，通常IDE一般都有支持：
+
+- KEIL debug(printf)打印 (可以实现TX RX)
+- IAR Terminal IO 打印 （可以实现TX RX)
+- JLINK SWO VIEWER （只能显示）
+- ST-LINK SERIAL WIRE VIEWER （只能显示）
+
+SWO 使用了ITM模块
+
+## keil的使用方法
+
+keil中可以通过设置DEBUG来配置
+
+![image-20210525030747681](images/image-20210525030747681.png)
+
+设置完了之后，端口0就可以用了，如果使用其他端口，需要修改tx函数。debug的时候，打开debug(printf)的窗口，即可使用，这边要设置时钟和MCU中的时钟要一致，端口默认选择port0。
+
