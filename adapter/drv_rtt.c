@@ -81,6 +81,6 @@ int rt_hw_jlink_rtt_init(void)
     
     SEGGER_RTT_printf(0,"\r\n SEGGER_RTT ADDRESS:%p \r\n",&_SEGGER_RTT);
 }
-INIT_BOARD_EXPORT(rt_hw_jlink_rtt_init);
+//INIT_BOARD_EXPORT(rt_hw_jlink_rtt_init);
 
 

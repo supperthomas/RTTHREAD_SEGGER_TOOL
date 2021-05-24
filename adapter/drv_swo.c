@@ -60,7 +60,7 @@ static void segger_swo_check(void)
     }
 }
 
-int rt_hw_jlink_rtt_init(void)
+int rt_hw_swo_init(void)
 {
     rt_thread_idle_sethook(segger_swo_check);
     struct serial_configure config = RT_SERIAL_CONFIG_DEFAULT;
@@ -71,6 +71,5 @@ int rt_hw_jlink_rtt_init(void)
                           RT_DEVICE_FLAG_RDWR | RT_DEVICE_FLAG_INT_RX,  &m_swo_cfg);
 
 }
-//INIT_BOARD_EXPORT(rt_hw_jlink_rtt_init);
 
 
