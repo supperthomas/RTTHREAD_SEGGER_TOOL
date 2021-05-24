@@ -54,7 +54,16 @@ SEGGER_RTT_PUT_CB_SECTION(SEGGER_RTT_CB_ALIGN(SEGGER_RTT_CB _SEGGER_RTT))__attri
 
 ## 注意事项
 
-你需要有JLINK连接。 在STM32或者nordic开发板上测试都是可以用的。其他的JLINK应该也是通用的，这个省去了调试的UART串口的占用。可以用这个口打印log或者console调试。当前前提是得有JLINK相应的硬件。
+1. 你需要有JLINK连接。 在STM32或者nordic开发板上测试都是可以用的。其他的JLINK应该也是通用的，这个省去了调试的UART串口的占用。可以用这个口打印log或者console调试。当前前提是得有JLINK相应的硬件。
+
+2. 只要你的开发板可以用JLINK来调试查看变量，就可以用这个软件包。
+RTT本质上，就是一直轮询_SEGGER_RTT这个全局变量。所以对架构不是特别敏感，只要你的板子JLINK可以debug即可。
+
+3. 如果你手上有STLINK， 可以选择刷成JLINK  参考连接[segger st-link](https://www.segger.com/products/debug-probes/j-link/models/other-j-links/st-link-on-board/)
+当然刷成JLINK之后，你的JLINK也只能操作STM32授权的设备，其他厂商设备是不支持的。
+
+
+
 
 ## 结语
 
