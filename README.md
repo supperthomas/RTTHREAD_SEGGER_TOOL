@@ -91,8 +91,8 @@ SWO的打印有以下几种方式，通常IDE一般都有支持：
 
 - KEIL debug(printf)打印 (可以实现TX RX)
 - IAR Terminal IO 打印 （可以实现TX RX)
-- JLINK SWO VIEWER （只能显示）
-- ST-LINK SERIAL WIRE VIEWER （只能显示）
+- JLINK SWO VIEWER （只能显示， 只能用于J-LINK）
+- ST-LINK SERIAL WIRE VIEWER （只能显示，只能用于ST-LINK）
 
 SWO 使用了ITM模块
 
@@ -104,3 +104,8 @@ keil中可以通过设置DEBUG来配置
 
 设置完了之后，端口0就可以用了，如果使用其他端口，需要修改tx函数。debug的时候，打开debug(printf)的窗口，即可使用，这边要设置时钟和MCU中的时钟要一致，端口默认选择port0。
 
+如果要实现console功能，如上面一开始讲到的一样
+
+- rt_hw_swo_init初始化必须在`rt_console_set_device(RT_CONSOLE_DEVICE_NAME);` 之前调用
+
+- rtconfig中的console也要设置为`SWO`
