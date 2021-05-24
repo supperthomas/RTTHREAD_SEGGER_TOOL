@@ -4,6 +4,14 @@
 
 这个软件包主要将JLINK作为RTT 的console口来使用，能够节省一些设备的UART资源。该软件包必须依赖于JLINK之上的，手上必须要有JLINK相关的硬件调试器才能使用。
 
+SEGGER_RTT有以下几个特点:
+
+- 可以在中断中打印
+- 可以缓存开机的log
+- 可以接收命令
+- 多平台支持
+- 不依赖操作系统，单机裸机都可以运行SEGGER_printf
+
 ## 如何使用
 
 drv_rtt.c 相当于多了一个UART串口device设备，如果你想要代替console的话，需要做如下修改
