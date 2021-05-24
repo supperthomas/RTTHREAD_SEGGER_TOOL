@@ -6,6 +6,8 @@
 
 ## 如何使用
 
+drv_rtt.c 相当于多了一个UART串口device设备，如果你想要代替console的话，需要做如下修改
+
 - rt_hw_jlink_rtt_init 初始化必须在`rt_console_set_device(RT_CONSOLE_DEVICE_NAME);` 之前调用
 
 - rtconfig中的console也要设置为`jlinkRtt`
