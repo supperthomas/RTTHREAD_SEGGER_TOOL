@@ -4,6 +4,9 @@ from building import *
 
 cwd = GetCurrentDir()
 
+src = Split('''
+''')
+
 
 if GetDepend(['SEGGER_RTT_ENABLE']):
     src += Split('''
