@@ -109,3 +109,18 @@ keil中可以通过设置DEBUG来配置
 - rt_hw_swo_init初始化必须在`rt_console_set_device(RT_CONSOLE_DEVICE_NAME);` 之前调用
 
 - rtconfig中的console也要设置为`SWO`
+
+## IAR使用方法
+
+打开SWO
+
+![image-20210529222625567](images/image-20210529222625567.png)
+
+![image-20210529222806327](images/image-20210529222806327.png)
+
+
+
+![image-20210529222831650](images/image-20210529222831650.png)
+
+
+
