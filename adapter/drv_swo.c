@@ -77,7 +77,7 @@ int rt_hw_swo_init(void)
     m_swo_cfg.serial = &_serial_swo;
     rt_hw_serial_register(&_serial_swo, "SWO", \
                           RT_DEVICE_FLAG_RDWR | RT_DEVICE_FLAG_INT_RX,  &m_swo_cfg);
-
+	return 0;
 }
 //INIT_BOARD_EXPORT(rt_hw_swo_init);
 

@@ -91,6 +91,7 @@ Revision: $Rev: 21386 $
   #define SEGGER_RTT_MAX_NUM_DOWN_BUFFERS           (3)     // Max. number of down-buffers (H->T) available on this target  (Default: 3)
 #endif
 
+//BUFFER_SIZE_UP 希望做成配置项，因为消息过长会显示不全。
 #ifndef   BUFFER_SIZE_UP
   #define BUFFER_SIZE_UP                            (1024)  // Size of the buffer for terminal output of target, up to host (Default: 1k)
 #endif
