@@ -10,8 +10,6 @@
  */
 #include "rtdevice.h"
 #include "SEGGER_RTT.h"
-#define RTT_DEFAULT_BUFFER_INDEX 0
-#define RTT_DEFAULT_TERMINAL_INDEX 0
 
 static struct rt_serial_device _serial_jlink_rtt;
 
