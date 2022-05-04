@@ -62,6 +62,8 @@ Revision: $Rev: 21386 $
   #include <intrinsics.h>
 #endif
 
+#include "rtconfig.h"
+
 /*********************************************************************
 *
 *       Defines, configurable
