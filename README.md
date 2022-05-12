@@ -126,3 +126,7 @@ keil中可以通过设置DEBUG来配置
 
 
 
+参考文档中心文档：
+
+[SEGGER_RTT](https://www.rt-thread.org/document/site/#/rt-thread-version/rt-thread-standard/application-note/debug/seggerRTT/segger_rtt)
+
