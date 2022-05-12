@@ -22,6 +22,8 @@ drv_rtt.c 相当于多了一个UART串口device设备，如果你想要代替con
 
 ```
 #define RT_CONSOLE_DEVICE_NAME "jlinkRtt"
+rt_hw_jlink_rtt_init();
+rt_console_set_device(RT_CONSOLE_DEVICE_NAME);
 ```
 
 实现这两点，基本可以将console设置为segger_rtt
