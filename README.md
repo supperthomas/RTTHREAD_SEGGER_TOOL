@@ -1,5 +1,7 @@
 # RTTHREAD_SEGGER_TOOL
 
+# 如果觉得有用，欢迎点个右上角的star小星星⭐
+
 ## Introduce
 
 这个软件包主要将JLINK作为RTT 的console口来使用，能够节省一些设备的UART资源。该软件包必须依赖于JLINK之上的，手上必须要有JLINK相关的硬件调试器才能使用。
