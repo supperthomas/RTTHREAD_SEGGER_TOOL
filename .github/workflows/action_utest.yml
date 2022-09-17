@@ -45,6 +45,8 @@ jobs:
       TEST_SD_FILE: ${{ matrix.legs.SD_FILE }}
     steps:
     - uses: actions/checkout@v3
+      with:
+        repository: RT-Thread/rt-thread
 
     - name: Install Tools
       shell: bash

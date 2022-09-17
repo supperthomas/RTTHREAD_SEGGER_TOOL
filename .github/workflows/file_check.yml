@@ -8,6 +8,8 @@ jobs:
     name: Scan code format and license
     steps:
       - uses: actions/checkout@v3
+        with:
+          repository: RT-Thread/rt-thread
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
