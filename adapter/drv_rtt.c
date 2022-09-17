@@ -77,7 +77,7 @@ int rt_hw_jlink_rtt_init(void)
     rt_hw_serial_register(&_serial_jlink_rtt, "jlinkRtt", \
                           RT_DEVICE_FLAG_RDWR | RT_DEVICE_FLAG_INT_RX,  &m_jlink_rtt_cfg);
     
-    //SEGGER_RTT_printf(0,"\r\n SEGGER_RTT ADDRESS:%p \r\n",&_SEGGER_RTT);
+    SEGGER_RTT_printf(0,"\r\n SEGGER_RTT ADDRESS:%p \r\n",&_SEGGER_RTT);
 	
 	return 0;
 }
