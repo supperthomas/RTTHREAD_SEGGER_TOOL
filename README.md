@@ -185,7 +185,7 @@ rtconfg.h
 ![image-20221003134935152](https://raw.githubusercontent.com/kurisaW/picbed/main/img/202210031349249.png)
 
 ```c
-shell.c [ 路径:D:\rt-thread\components\finsh\shell.c]
+shell.c [ 路径: \rt-thread\components\finsh\shell.c]
 
 /* 1、首先添加以下头文件 */
 #include "SEGGER_RTT.h"
