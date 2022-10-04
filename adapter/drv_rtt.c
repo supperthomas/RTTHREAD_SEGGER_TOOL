@@ -60,46 +60,6 @@ static void segger_rtt_check(void)
     }
 }
 
-#ifdef RT_USING_SERIAL_V1
-
-#ifndef RT_SERIAL_RB_BUFSZ
-#define RT_SERIAL_RB_BUFSZ              64
-#endif
-
-#define RT_SERIAL_CONFIG_DEFAULT           \
-{                                          \
-    BAUD_RATE_115200, /* 115200 bits/s */  \
-    DATA_BITS_8,      /* 8 databits */     \
-    STOP_BITS_1,      /* 1 stopbit */      \
-    PARITY_NONE,      /* No parity  */     \
-    BIT_ORDER_LSB,    /* LSB first sent */ \
-    NRZ_NORMAL,       /* Normal mode */    \
-    RT_SERIAL_RB_BUFSZ, /* Buffer size */  \
-    RT_SERIAL_FLOWCONTROL_NONE, /* Off flowcontrol */ \
-    0                                      \
-}
-#endif
-
-#ifdef RT_USING_SERIAL_V2
-
-#define RT_SERIAL_RX_MINBUFSZ 64
-#define RT_SERIAL_TX_MINBUFSZ 64
-
-#define RT_SERIAL_CONFIG_DEFAULT_jlinkRtt              \
-{                                             \
-    BAUD_RATE_115200,    /* 115200 bits/s */  \
-    DATA_BITS_8,         /* 8 databits */     \
-    STOP_BITS_1,         /* 1 stopbit */      \
-    PARITY_NONE,         /* No parity  */     \
-    BIT_ORDER_LSB,       /* LSB first sent */ \
-    NRZ_NORMAL,          /* Normal mode */    \
-    RT_SERIAL_RX_MINBUFSZ, /* rxBuf size */   \
-    RT_SERIAL_TX_MINBUFSZ, /* txBuf size */   \
-    0                                         \
-}
-
-#endif
-
 int rt_hw_jlink_rtt_init(void)
 {
     SEGGER_RTT_Init();
@@ -122,8 +82,3 @@ int rt_hw_jlink_rtt_init(void)
 	return 0;
 }
 //INIT_BOARD_EXPORT(rt_hw_jlink_rtt_init);
-
-char rt_hw_console_getchar(void)
-{
-    return SEGGER_RTT_GetKey();
-}
