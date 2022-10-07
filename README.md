@@ -13,8 +13,29 @@ SEGGER_RTT有以下几个特点:
 - 可以接收命令
 - 多平台支持
 - 不依赖操作系统，单机裸机都可以运行SEGGER_printf
+- 支持SERIAL_V2
 
 ## 如何使用
+
+#### RTTHREAD串口框架SERIAL_V2
+
+如果你的串口框架使用的是第二代串口框架的话`RT_USING_SERIAL_V2`  由于第二代串口框架非常依赖系统的调度，所以开始的`version`等信息无法打印出来（除非修改内核代码），不过只有这一个缺点，其他的命令行等都可以使用。只要使用的串口框架SERIAL_V2，打开配置`RT_USING_SERIAL_V2`既可以直接使用
+
+ jlink在系统调度起来之后，会运行下面代码自动启动
+
+```
+int rt_hw_jlink_console_init(void)
+{
+	  rt_hw_jlink_rtt_init();
+    rt_console_set_device("jlinkRtt");
+	  return 0;
+}
+INIT_APP_EXPORT(rt_hw_jlink_console_init);
+```
+
+#### RTTHREAD串口框架SERIAL_V1
+
+如果你的串口框架使用的是第一代串口框架的话`RT_USING_SERIAL_V1` ， 如果你想打印调度前的version等信息的话，参考如下设置方法：
 
 drv_rtt.c 相当于多了一个UART串口device设备，如果你想要代替console的话，需要做如下修改
 
@@ -30,13 +51,15 @@ rt_console_set_device(RT_CONSOLE_DEVICE_NAME);
 
 实现这两点，基本可以将console设置为segger_rtt
 
+
+
 ### JLINK_RTT_VIEWER配置
 
 根据你当前的芯片以及JTAG还是SWD来选择
 
 ![image-20210523144320179](images/image-20210523144320179.png)
 
-这边需要注意的是最下面的地址，指的是代码中&_SEGGER_RTT的地址，有些芯片支持自动识别地址，有些芯片不支持自动识别地址。可以设置search 范围
+这边需要注意的是最下面的地址，指的是代码中`_SEGGER_RTT`的地址，有些芯片支持自动识别地址，有些芯片不支持自动识别地址。不支持的可以设置search 范围
 
 ```
 0x20000000 0x1000
@@ -44,7 +67,7 @@ rt_console_set_device(RT_CONSOLE_DEVICE_NAME);
 
 ### SEGGER_RTT 地址
 
-segger_rtt的地址，这边通过修改代码，将地址默认设置在0x20000000上面，目前只支持KEIL这样做，后面会支持其他的，其他编译器debug的时候看下_SEGGER_RTT变量的地址。
+segger_rtt的地址，这边通过修改代码，将地址默认设置在0x20000000上面，目前只支持KEIL这样做，后面会支持其他的，其他编译器需要debug的时候看下_SEGGER_RTT变量的地址。
 
 ```
 SEGGER_RTT_PUT_CB_SECTION(SEGGER_RTT_CB_ALIGN(SEGGER_RTT_CB _SEGGER_RTT))__attribute__((section(".ARM.__at_0x20000000")));
@@ -63,6 +86,10 @@ SEGGER_RTT_PUT_CB_SECTION(SEGGER_RTT_CB_ALIGN(SEGGER_RTT_CB _SEGGER_RTT))__attri
 也可以在RTT_VIEWER里面输入，putty和VIEWER只能用一种。输入Enter或者回车可以输入命令
 
 ![image-20210523145349136](images/image-20210523145349136.png)
+
+需要注意输入方式要改成如下图所示的方式
+
+![image-20221007203535784](images/image-20221007203535784.png)
 
 
 
@@ -126,158 +153,7 @@ keil中可以通过设置DEBUG来配置
 
 ![image-20210529222831650](images/image-20210529222831650.png)
 
----
 
-## 瑞萨RA6M4开发板使用示例<RT-Thread的版本为v4.1.0及以上>
-
-#### 一、创建工程，选择SEGGER_RTT软件包
-
-![image-20221003133030692](https://raw.githubusercontent.com/kurisaW/picbed/main/img/202210031330791.png)
-
-![image-20221003133219108](https://raw.githubusercontent.com/kurisaW/picbed/main/img/202210031332225.png)
-
-#### 2、添加jlinkRtt初始化函数[ 路径：/rt-thread/src/kservice.c ]
-
-在`rt_console_set_device`前调用`rt_hw_jlink_rtt_init`初始化函数
-
-![image-20221003133721333](https://raw.githubusercontent.com/kurisaW/picbed/main/img/202210031337395.png)
-
-#### 3、drv_rtt.c配置
-
-在`drv_rtt.c`中添加如下代码
-
-```c
-#ifdef RT_USING_SERIAL_V2
-
-#define RT_SERIAL_RX_MINBUFSZ 64
-#define RT_SERIAL_TX_MINBUFSZ 64
-
-#define RT_SERIAL_CONFIG_DEFAULT_jlinkRtt              \
-{                                             \
-    BAUD_RATE_115200,    /* 115200 bits/s */  \
-    DATA_BITS_8,         /* 8 databits */     \
-    STOP_BITS_1,         /* 1 stopbit */      \
-    PARITY_NONE,         /* No parity  */     \
-    BIT_ORDER_LSB,       /* LSB first sent */ \
-    NRZ_NORMAL,          /* Normal mode */    \
-    RT_SERIAL_RX_MINBUFSZ, /* rxBuf size */   \
-    RT_SERIAL_TX_MINBUFSZ, /* txBuf size */   \
-    0                                         \
-}
-
-#endif
-```
-
-```c
-char rt_hw_console_getchar(void)
-{
-    return SEGGER_RTT_GetKey();
-}
-```
-
-#### 4、控制台对接上jlinkRtt
-```
-rtconfg.h
-
-// 修改RT_CONSOLE_DEVICE_NAME为空
-```
-
-![image-20221003134935152](https://raw.githubusercontent.com/kurisaW/picbed/main/img/202210031349249.png)
-
-```c
-shell.c [ 路径: \rt-thread\components\finsh\shell.c]
-
-/* 1、首先添加以下头文件 */
-#include "SEGGER_RTT.h"
-#include "SEGGER_RTT_Conf.h"
-
-/* 2、修改finsh_getchar */
-int finsh_getchar(void)
-{
-#ifdef RT_USING_DEVICE
-    char ch = 0;
-#ifdef RT_USING_POSIX_STDIO
-    if(read(STDIN_FILENO, &ch, 1) > 0)
-    {
-        return ch;
-    }
-    else
-    {
-        return -1; /* EOF */
-    }
-#else
-    rt_device_t device;
-
-    RT_ASSERT(shell != RT_NULL);
-
-    device = shell->device;
-    if (device == RT_NULL)
-    {
-        extern char rt_hw_console_getchar(void);
-        return rt_hw_console_getchar();
-    }
-
-    while (rt_device_read(device, -1, &ch, 1) != 1)
-    {
-        rt_sem_take(&shell->rx_sem, RT_WAITING_FOREVER);
-        if (shell->device != device)
-        {
-            device = shell->device;
-            if (device == RT_NULL)
-            {
-                return -1;
-            }
-        }
-    }
-
-    return ch;
-#endif /* RT_USING_POSIX_STDIO */
-#else
-    extern char rt_hw_console_getchar(void);
-    return rt_hw_console_getchar();
-#endif /* RT_USING_DEVICE */
-}
-```
-
-```c
-kservice.c [ 路径:\rt-thread\src\kservice.c ]
-// 另外我们还需要完成对控制台字符读取的对接，修改rt_hw_console_output 
-
-RT_WEAK void rt_hw_console_output(const char *str)
-{
-    /* empty console output */
-    rt_size_t i = 0, size = 0;
-
-    size = rt_strlen(str);
-    for (i = 0; i < size; i++)
-    {
-        if (*(str + i) == '\n')
-        {
-           break;
-        }
-    }
-    SEGGER_RTT_printf(0,"%s",str);
-}
-RTM_EXPORT(rt_hw_console_output);
-```
-
-#### 5、实验效果
-
-首先确保已经下载好`J-Link RTT Viewer`，直接去[官网](https://www.segger.com/products/debug-probes/j-link/tools/rtt-viewer/)下载最新版本即可
-
-然后编译和下载工程，注意下载方式为`J-Link`
-
-双击打开rtthread.map[ 路径: /Debug/rtthread.map ]文件，查看`_SEGGER_RTT`变量地址(全局搜索即可，找到.bss._SEGGER_RTT)
-
-![image-20221003140449806](https://raw.githubusercontent.com/kurisaW/picbed/main/img/202210031404882.png)
-
-打开`J-Link RTT Viewer`
-
-![image-20221003140736161](https://raw.githubusercontent.com/kurisaW/picbed/main/img/202210031407216.png)
-
-此时就可以正常使用segger_rtt了
-
-![image-20221003140911791](https://raw.githubusercontent.com/kurisaW/picbed/main/img/202210031409868.png)
 
 参考文档中心文档：
 
