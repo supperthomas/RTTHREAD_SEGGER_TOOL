@@ -6,6 +6,7 @@
  * Change Logs:
  * Date           Author       Notes
  * 2021-05-23     supperthomas init
+ * 2022-10-07     supperthomas add the support of RT_USING_SERIAL_V2
  *
  */
 #include "rtdevice.h"
@@ -43,22 +44,56 @@ static int _rtt_getc(struct rt_serial_device *serial)
 {
     return SEGGER_RTT_GetKey();
 }
+#ifdef RT_USING_SERIAL_V2
+static rt_size_t stm32_transmit(struct rt_serial_device     *serial,
+                                rt_uint8_t           *buf,
+                                rt_size_t             size,
+                                rt_uint32_t           tx_flag)
+{
+
+    struct stm32_uart *uart;
+
+    RT_ASSERT(serial != RT_NULL);
+    RT_ASSERT(buf != RT_NULL);
+
+    SEGGER_RTT_Write(RTT_DEFAULT_BUFFER_INDEX, buf,size);
+    rt_hw_serial_isr(serial, RT_SERIAL_EVENT_TX_DMADONE);
+
+    return size;
+}
+#endif
 
 static struct rt_uart_ops _jlink_rtt_ops =
 {
     _rtt_cfg,
     _rtt_ctrl,
     _rtt_putc,
-    _rtt_getc
+    _rtt_getc,
+#ifdef RT_USING_SERIAL_V2
+    .transmit = stm32_transmit
+#endif
 };
 
 static void segger_rtt_check(void)
 {
-    if (SEGGER_RTT_HasKey())
+#ifdef RT_USING_SERIAL_V2
+    struct rt_serial_rx_fifo *rx_fifo;
+    rt_size_t rx_length = 0;
+    rx_fifo = (struct rt_serial_rx_fifo *)_serial_jlink_rtt.serial_rx;
+    RT_ASSERT(rx_fifo != RT_NULL);
+    while (SEGGER_RTT_HasKey())
+    {
+        rt_ringbuffer_putchar(&(rx_fifo->rb), SEGGER_RTT_GetKey());
+        rt_hw_serial_isr(&_serial_jlink_rtt, RT_SERIAL_EVENT_RX_IND);
+    }
+#else  //RT_USING_SERIAL_V1
+    while (SEGGER_RTT_HasKey())
     {
         rt_hw_serial_isr(&_serial_jlink_rtt, RT_SERIAL_EVENT_RX_IND);
     }
+#endif
 }
+
 
 int rt_hw_jlink_rtt_init(void)
 {
@@ -81,4 +116,19 @@ int rt_hw_jlink_rtt_init(void)
 
     return 0;
 }
-//INIT_BOARD_EXPORT(rt_hw_jlink_rtt_init);
+
+int rt_hw_jlink_console_init(void)
+{
+    rt_hw_jlink_rtt_init();
+    rt_console_set_device("jlinkRtt");
+    return 0;
+}
+#ifdef RT_USING_SERIAL_V2
+INIT_APP_EXPORT(rt_hw_jlink_console_init);
+//if use RT_USING_SERIAL_V2 you can only use console after schedule, the root log missing
+#endif
+
+// if use RT_USING_SERIAL_V1  you can add the code before schedule
+
+
+
