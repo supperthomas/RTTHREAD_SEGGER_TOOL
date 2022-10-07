@@ -64,6 +64,10 @@ SEGGER_RTT_PUT_CB_SECTION(SEGGER_RTT_CB_ALIGN(SEGGER_RTT_CB _SEGGER_RTT))__attri
 
 ![image-20210523145349136](images/image-20210523145349136.png)
 
+需要注意输入方式要改成如下图所示的方式
+
+![image-20221007203535784](images/image-20221007203535784.png)
+
 
 
 ## 注意事项
