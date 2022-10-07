@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2021, RT-Thread Development Team
+ * Copyright (c) 2006-2022, RT-Thread Development Team
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -76,9 +76,9 @@ int rt_hw_jlink_rtt_init(void)
     m_jlink_rtt_cfg.serial = &_serial_jlink_rtt;
     rt_hw_serial_register(&_serial_jlink_rtt, "jlinkRtt", \
                           RT_DEVICE_FLAG_RDWR | RT_DEVICE_FLAG_INT_RX,  &m_jlink_rtt_cfg);
-    
+
     SEGGER_RTT_printf(0,"\r\n SEGGER_RTT ADDRESS:%p \r\n",&_SEGGER_RTT);
-	
-	return 0;
+
+    return 0;
 }
 //INIT_BOARD_EXPORT(rt_hw_jlink_rtt_init);
