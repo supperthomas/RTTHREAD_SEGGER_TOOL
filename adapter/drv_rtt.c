@@ -45,14 +45,11 @@ static int _rtt_getc(struct rt_serial_device *serial)
     return SEGGER_RTT_GetKey();
 }
 #ifdef RT_USING_SERIAL_V2
-static rt_size_t stm32_transmit(struct rt_serial_device     *serial,
+static rt_size_t renesas_transmit(struct rt_serial_device     *serial,
                                 rt_uint8_t           *buf,
                                 rt_size_t             size,
                                 rt_uint32_t           tx_flag)
 {
-
-    struct stm32_uart *uart;
-
     RT_ASSERT(serial != RT_NULL);
     RT_ASSERT(buf != RT_NULL);
 
@@ -70,7 +67,7 @@ static struct rt_uart_ops _jlink_rtt_ops =
     _rtt_putc,
     _rtt_getc,
 #ifdef RT_USING_SERIAL_V2
-    .transmit = stm32_transmit
+    .transmit = renesas_transmit
 #endif
 };
 
@@ -78,7 +75,6 @@ static void segger_rtt_check(void)
 {
 #ifdef RT_USING_SERIAL_V2
     struct rt_serial_rx_fifo *rx_fifo;
-    rt_size_t rx_length = 0;
     rx_fifo = (struct rt_serial_rx_fifo *)_serial_jlink_rtt.serial_rx;
     RT_ASSERT(rx_fifo != RT_NULL);
     while (SEGGER_RTT_HasKey())
