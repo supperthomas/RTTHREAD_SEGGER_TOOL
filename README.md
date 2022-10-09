@@ -26,9 +26,9 @@ SEGGER_RTT有以下几个特点:
 ```
 int rt_hw_jlink_console_init(void)
 {
-	  rt_hw_jlink_rtt_init();
+	rt_hw_jlink_rtt_init();
     rt_console_set_device("jlinkRtt");
-	  return 0;
+    return 0;
 }
 INIT_APP_EXPORT(rt_hw_jlink_console_init);
 ```
