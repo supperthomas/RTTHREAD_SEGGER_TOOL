@@ -32,6 +32,7 @@ int rt_hw_jlink_console_init(void)
 }
 INIT_APP_EXPORT(rt_hw_jlink_console_init);
 ```
+`注意：如果终端打印提示[warning: tidle0 stack is close to end of stack address.]，请在rtconfig.h文件中搜索IDLE_THREAD_STACK_SIZE，并扩大该栈空间`
 
 #### RTTHREAD串口框架SERIAL_V1
 
