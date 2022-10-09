@@ -45,7 +45,7 @@ static int _rtt_getc(struct rt_serial_device *serial)
     return SEGGER_RTT_GetKey();
 }
 #ifdef RT_USING_SERIAL_V2
-static rt_size_t renesas_transmit(struct rt_serial_device     *serial,
+static rt_size_t mcu_transmit(struct rt_serial_device     *serial,
                                 rt_uint8_t           *buf,
                                 rt_size_t             size,
                                 rt_uint32_t           tx_flag)
@@ -67,7 +67,7 @@ static struct rt_uart_ops _jlink_rtt_ops =
     _rtt_putc,
     _rtt_getc,
 #ifdef RT_USING_SERIAL_V2
-    .transmit = renesas_transmit
+    .transmit = mcu_transmit
 #endif
 };
 
