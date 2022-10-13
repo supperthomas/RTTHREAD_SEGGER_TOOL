@@ -213,3 +213,14 @@ jobs:
           cat bsp/$RTT_BSP/.config
           pushd bsp/$RTT_BSP && pkgs --update && popd
           scons -C bsp/$RTT_BSP
+          git reset --hard
+          git clean -xfd
+          #test for swo
+          sed -i "s/# CONFIG_PKG_USING_SEGGER_RTT is not set/CONFIG_PKG_USING_SEGGER_RTT=y/g" bsp/$RTT_BSP/.config
+          scons --pyconfig-silent -C bsp/$RTT_BSP
+          sed -i "s/# CONFIG_SWO_ENABLE is not set/CONFIG_SWO_ENABLE=y/g" bsp/$RTT_BSP/.config
+          scons --pyconfig-silent -C bsp/$RTT_BSP
+          cat bsp/$RTT_BSP/.config
+          pushd bsp/$RTT_BSP && pkgs --update && popd
+          scons -C bsp/$RTT_BSP
+
