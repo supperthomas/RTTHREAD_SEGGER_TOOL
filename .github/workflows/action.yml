@@ -209,6 +209,7 @@ jobs:
         run: |
           source ~/.env/env.sh
           du -h --max-depth=1
+          du -h --max-depth=1 bsp
           sed -i "s/# CONFIG_PKG_USING_SEGGER_RTT is not set/CONFIG_PKG_USING_SEGGER_RTT=y/g" bsp/$RTT_BSP/.config
           scons --pyconfig-silent -C bsp/$RTT_BSP
           cat bsp/$RTT_BSP/.config
