@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2022, RT-Thread Development Team
+ * Copyright (c) 2006-2021, RT-Thread Development Team
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -35,15 +35,15 @@ static rt_err_t _swo_ctrl(struct rt_serial_device *serial, int cmd, void *arg)
 }
 static int _swo_putc(struct rt_serial_device *serial, char c)
 {
-    if (((ITM->TCR & ITM_TCR_ITMENA_Msk) != 0UL) &&      /* ITM enabled */
-            ((ITM->TER & (1<<SWO_PORT_NUMBER)         ) != 0UL)   )     /* ITM Port #0 enabled */
+  if (((ITM->TCR & ITM_TCR_ITMENA_Msk) != 0UL) &&      /* ITM enabled */
+      ((ITM->TER & (1<<SWO_PORT_NUMBER)         ) != 0UL)   )     /* ITM Port #0 enabled */
+  {
+    while (ITM->PORT[SWO_PORT_NUMBER].u32 == 0)
     {
-        while (ITM->PORT[SWO_PORT_NUMBER].u32 == 0)
-        {
-            __NOP();
-        }
-        ITM->PORT[SWO_PORT_NUMBER].u8 = (uint8_t)c;
+      __NOP();
     }
+    ITM->PORT[SWO_PORT_NUMBER].u8 = (uint8_t)c;
+  }
     return RT_EOK;
 }
 
@@ -77,7 +77,7 @@ int rt_hw_swo_init(void)
     m_swo_cfg.serial = &_serial_swo;
     rt_hw_serial_register(&_serial_swo, "SWO", \
                           RT_DEVICE_FLAG_RDWR | RT_DEVICE_FLAG_INT_RX,  &m_swo_cfg);
-    return 0;
+
 }
 //INIT_BOARD_EXPORT(rt_hw_swo_init);
 
