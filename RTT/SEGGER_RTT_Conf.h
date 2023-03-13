@@ -62,8 +62,6 @@ Revision: $Rev: 21386 $
   #include <intrinsics.h>
 #endif
 
-#include "rtconfig.h"
-
 /*********************************************************************
 *
 *       Defines, configurable
@@ -92,7 +90,6 @@ Revision: $Rev: 21386 $
 #ifndef   SEGGER_RTT_MAX_NUM_DOWN_BUFFERS
   #define SEGGER_RTT_MAX_NUM_DOWN_BUFFERS           (3)     // Max. number of down-buffers (H->T) available on this target  (Default: 3)
 #endif
-
 
 #ifndef   BUFFER_SIZE_UP
   #define BUFFER_SIZE_UP                            (1024)  // Size of the buffer for terminal output of target, up to host (Default: 1k)
