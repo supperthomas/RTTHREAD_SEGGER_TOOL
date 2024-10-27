@@ -45,10 +45,18 @@ static int _rtt_getc(struct rt_serial_device *serial)
     return SEGGER_RTT_GetKey();
 }
 #ifdef RT_USING_SERIAL_V2
+///< RT-Thread Kernel version
+#if defined(RT_VERSION_CHECK) && (RTTHREAD_VERSION >= RT_VERSION_CHECK(5, 0, 2))
+static rt_ssize_t mcu_transmit(struct rt_serial_device     *serial,
+                                rt_uint8_t           *buf,
+                                rt_size_t             size,
+                                rt_uint32_t           tx_flag)
+#else   /* legacy version macros (<5.0.2) */
 static rt_size_t mcu_transmit(struct rt_serial_device     *serial,
                                 rt_uint8_t           *buf,
                                 rt_size_t             size,
                                 rt_uint32_t           tx_flag)
+#endif
 {
     RT_ASSERT(serial != RT_NULL);
     RT_ASSERT(buf != RT_NULL);
