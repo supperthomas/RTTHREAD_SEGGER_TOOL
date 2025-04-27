@@ -268,7 +268,7 @@ static unsigned char _aTerminalId[16] = { '0', '1', '2', '3', '4', '5', '6', '7'
 // RTT Control Block and allocate buffers for channel 0
 //
 #if defined(__CC_ARM) || defined(__CLANG_ARM)           /* ARM Compiler */
-SEGGER_RTT_PUT_CB_SECTION(SEGGER_RTT_CB_ALIGN(SEGGER_RTT_CB _SEGGER_RTT))__attribute__((section(".ARM.__at_0x20000000")));
+SEGGER_RTT_PUT_CB_SECTION(SEGGER_RTT_CB_ALIGN(SEGGER_RTT_CB _SEGGER_RTT));//这个可能存在问题，谨慎使用__attribute__((section(".ARM.__at_0x20000000")));
 #else
 SEGGER_RTT_PUT_CB_SECTION(SEGGER_RTT_CB_ALIGN(SEGGER_RTT_CB _SEGGER_RTT));
 #endif
