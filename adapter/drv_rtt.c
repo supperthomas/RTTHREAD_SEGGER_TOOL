@@ -85,13 +85,13 @@ static void segger_rtt_check(void)
     struct rt_serial_rx_fifo *rx_fifo;
     rx_fifo = (struct rt_serial_rx_fifo *)_serial_jlink_rtt.serial_rx;
     RT_ASSERT(rx_fifo != RT_NULL);
-    while (SEGGER_RTT_HasKey())
+    while (SEGGER_RTT_HasKey() && (_serial_jlink_rtt.parent.open_flag & RT_DEVICE_OFLAG_OPEN))
     {
         rt_ringbuffer_putchar(&(rx_fifo->rb), SEGGER_RTT_GetKey());
         rt_hw_serial_isr(&_serial_jlink_rtt, RT_SERIAL_EVENT_RX_IND);
     }
 #else  //RT_USING_SERIAL_V1
-    while (SEGGER_RTT_HasKey())
+    while (SEGGER_RTT_HasKey() && (_serial_jlink_rtt.parent.open_flag & RT_DEVICE_OFLAG_OPEN))
     {
         rt_hw_serial_isr(&_serial_jlink_rtt, RT_SERIAL_EVENT_RX_IND);
     }
